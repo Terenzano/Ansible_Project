@@ -49,8 +49,8 @@ ntp_server=10.1.200.11
 ntp_server=10.10.200.11
 
 [nxos]
-nxos-spine1
-nxos-spine2
+10.10.20.178
+10.10.20.177
 
 [nxos:vars]
 os=nxos
@@ -63,8 +63,8 @@ eos-spine2
 os=eos
 
 [iosxe]
-csr1
-csr2
+10.10.20.175
+10.10.20.176
 
 [iosxe:vars]
 os=ios

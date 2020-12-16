@@ -1,6 +1,6 @@
 ---
 - name: PLAY 1 - GENERATE SNMP CONFIGURATIONS
-  hosts: all
+  hosts: iosxe, nxos
   connection: local
   gather_facts: no
 

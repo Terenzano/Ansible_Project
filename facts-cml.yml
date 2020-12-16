@@ -23,3 +23,18 @@
           - show run | inc snmp-server community
         provider: "{{ base_provider }}"
       register: snmp_data
+
+    - name: DEBUG COMMAND STRING RESPONSE WITH JINJA SHORTHAND SYNTAX
+      debug:
+        var: snmp_data.stdout.0
+
+    - name: DEBUG COMMAND STRING RESPONSE WITH STANDARD PYTHON SYNTAX
+      debug:
+        var: snmp_data['stdout'][0]
+
+    - name: WRITE DATA TO FILE
+      template:
+        src: basic.j2
+        # this template was saved in the templates directory
+        dest: ./commands/snmp/{{ inventory_hostname }}.txt
+        # the commands and snmp directories were created manually
