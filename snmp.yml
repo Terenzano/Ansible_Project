@@ -1,0 +1,33 @@
+---
+- name: PLAY 1 - GENERATE SNMP CONFIGURATIONS
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: GENERATE CONFIGS FOR EACH OS
+      template:
+        src: "./snmp/{{ os }}.j2"
+        dest: "./configs/snmp/{{ inventory_hostname }}.cfg"
+
+- name: PLAY 2 - ENSURE EOS SNMP CONFIGS ARE DEPLOYED
+  hosts: eos
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: DEPLOY CONFIGS FOR EOS
+      eos_config:
+        src: "./configs/snmp/{{ inventory_hostname }}.cfg"
+        provider: "{{ base_provider }}"
+
+- name: PLAY 3 - ENSURE JUNOS SNMP CONFIGS ARE DEPLOYED USING SET COMMANDS
+  hosts: junos
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: DEPLOY CONFIGS FOR JUNOS
+      junos_config:
+        src: "./configs/snmp/{{ inventory_hostname }}.cfg"
+        provider: "{{ base_provider }}"
