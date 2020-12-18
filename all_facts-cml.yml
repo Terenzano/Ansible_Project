@@ -1,0 +1,59 @@
+---
+- name: PLAY 1 - COLLECT FACTS FOR IOS
+  hosts: iosxe, nxos
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: COLLECT FACTS FOR IOS
+      ios_facts:
+        provider: "{{ base_provider }}"
+
+    - name: DEBUG OS VERSION
+      debug:
+        var: ansible_net_version
+
+    - name: DEBUG HOSTNAME
+      debug:
+        var: ansible_net_hostname
+
+    - name: ISSUE SHOW COMMAND
+      ios_command:
+        commands:
+          - show run | inc snmp-server community
+        provider: "{{ base_provider }}"
+      register: snmp_data
+
+    - name: DEBUG COMMAND STRING RESPONSE WITH JINJA SHORTHAND SYNTAX
+      debug:
+        var: snmp_data.stdout.0
+
+    - name: DEBUG COMMAND STRING RESPONSE WITH STANDARD PYTHON SYNTAX
+      debug:
+        var: snmp_data['stdout'][0]
+
+    - name: WRITE DATA TO FILE
+      template:
+        src: basic.j2
+        # this template was saved in the templates directory
+        dest: ./commands/snmp/{{ inventory_hostname }}.txt
+        # the commands and snmp directories were created manually
+
+- name: PLAY 2 - CREATE REPORTS
+  hosts: iosxe, nxos
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: GENERATE DEVICE SPECIFIC REPORTS
+      template:
+        src: ./reports/facts.j2
+        # these sub-directories were created manually
+        dest: ./reports/facts/{{ inventory_hostname }}.md
+
+    - name: CREATE MASTER REPORT
+      assemble:
+        src: ./reports/facts/
+        dest: ./reports/master-report.md
+        delimiter: "---"
+      run_once: true

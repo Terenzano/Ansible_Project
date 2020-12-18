@@ -1,2 +1,2 @@
 export ANSIBLE_PARAMIKO_HOST_KEY_AUTO_ADD=True
-
+export ANSIBLE_INVENTORY=inventory
