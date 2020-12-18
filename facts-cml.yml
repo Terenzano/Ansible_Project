@@ -40,7 +40,7 @@
         # the commands and snmp directories were created manually
 
 - name: PLAY 2 - CREATE REPORTS
-  hosts: "iosxe,eos,nxos"
+  hosts: "iosxe"
   connection: local
   gather_facts: no
 
