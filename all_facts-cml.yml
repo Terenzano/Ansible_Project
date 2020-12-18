@@ -60,7 +60,7 @@
     - name: ISSUE SHOW COMMAND
       nxos_command:
         commands:
-          - show run | inc snmp-server community
+          - show run | inc snmp-server
         provider: "{{ base_provider }}"
       register: snmp_data
 
